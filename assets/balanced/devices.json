@@ -1,0 +1,24 @@
+{
+  "devices": [
+    { "id": 1,  "type": "BREAKER",          "name": "Main Breaker A",          "lock_time": 4 },
+    { "id": 2,  "type": "CIRCUIT_BREAKER",  "name": "Circuit Breaker A",       "lock_time": 6 },
+    { "id": 3,  "type": "FUSE",             "name": "Fuse A",                  "lock_time": 2 },
+    { "id": 4,  "type": "DISCONNECT_SWITCH","name": "Disconnect A",            "lock_time": 3 },
+    { "id": 5,  "type": "BREAKER",          "name": "Main Breaker B",          "lock_time": 5 },
+    { "id": 6,  "type": "FUSE",             "name": "Fuse B",                  "lock_time": 4 },
+
+    { "id": 7,  "type": "VALVE",            "name": "Inlet Valve A",           "lock_time": 5 },
+    { "id": 8,  "type": "PRESSURE_GAUGE",   "name": "Pressure Gauge A",        "lock_time": 3 },
+    { "id": 9,  "type": "FLOW_METER",       "name": "Flow Meter A",            "lock_time": 6 },
+    { "id": 10, "type": "EMERGENCY_STOP",   "name": "Emergency Stop A",        "lock_time": 1 },
+    { "id": 11, "type": "VALVE",            "name": "Inlet Valve B",           "lock_time": 5 },
+    { "id": 12, "type": "EMERGENCY_STOP",   "name": "Emergency Stop B",        "lock_time": 4 },
+
+    { "id": 13, "type": "CONTROL_SWITCH",   "name": "Control Switch A",        "lock_time": 4 },
+    { "id": 14, "type": "SAFETY_RELAY",     "name": "Safety Relay A",          "lock_time": 6 },
+    { "id": 15, "type": "SAFETY_LOCK",      "name": "Safety Lock A",           "lock_time": 5 },
+    { "id": 16, "type": "CONTROL_SWITCH",   "name": "Control Switch B",        "lock_time": 3 },
+    { "id": 17, "type": "TAG",              "name": "Lockout Tag A",           "lock_time": 2 },
+    { "id": 18, "type": "SAFETY_LOCK",      "name": "Safety Lock B",           "lock_time": 4 }
+  ]
+}

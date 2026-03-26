@@ -1,0 +1,14 @@
+{
+  "teams": [
+    {
+      "name": "Alpha",
+      "capabilities": ["BREAKER", "CIRCUIT_BREAKER", "DISCONNECT_SWITCH", "TAG", "FUSE"],
+      "max_capacity": 3
+    },
+    {
+      "name": "Beta",
+      "capabilities": ["VALVE", "PRESSURE_GAUGE", "EMERGENCY_STOP", "SAFETY_RELAY"],
+      "max_capacity": 3
+    }
+  ]
+}

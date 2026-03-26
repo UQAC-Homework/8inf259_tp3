@@ -1,0 +1,129 @@
+{
+  "devices": [
+    {
+      "id": 1,
+      "type": "VALVE",
+      "name": "Inlet Valve"
+    },
+    {
+      "id": 2,
+      "type": "BREAKER",
+      "name": "High Pressure Breaker"
+    },
+    {
+      "id": 3,
+      "type": "CIRCUIT_BREAKER",
+      "name": "Main Circuit Breaker"
+    },
+    {
+      "id": 4,
+      "type": "DISCONNECT_SWITCH",
+      "name": "Primary Disconnect Switch"
+    },
+    {
+      "id": 5,
+      "type": "TAG",
+      "name": "Lockout Tag"
+    },
+    {
+      "id": 6,
+      "type": "PADLOCK",
+      "name": "Padlock LOTO"
+    },
+    {
+      "id": 7,
+      "type": "PRESSURE_GAUGE",
+      "name": "Pressure Gauge"
+    },
+    {
+      "id": 8,
+      "type": "VALVE",
+      "name": "Outlet Valve"
+    },
+    {
+      "id": 9,
+      "type": "BREAKER",
+      "name": "Overload Breaker"
+    },
+    {
+      "id": 10,
+      "type": "DISCONNECT_SWITCH",
+      "name": "Secondary Disconnect Switch"
+    },
+    {
+      "id": 11,
+      "type": "TAG",
+      "name": "Secondary Lockout Tag"
+    },
+    {
+      "id": 12,
+      "type": "FLOW_METER",
+      "name": "Flow Meter"
+    },
+    {
+      "id": 13,
+      "type": "EMERGENCY_STOP",
+      "name": "Emergency Stop Button"
+    },
+    {
+      "id": 14,
+      "type": "CIRCUIT_BREAKER",
+      "name": "Auxiliary Circuit Breaker"
+    },
+    {
+      "id": 15,
+      "type": "DISCONNECT_SWITCH",
+      "name": "Auxiliary Disconnect Switch"
+    },
+    {
+      "id": 16,
+      "type": "FUSE",
+      "name": "Main Fuse"
+    },
+    {
+      "id": 17,
+      "type": "TAG",
+      "name": "Generator Lockout Tag"
+    },
+    {
+      "id": 18,
+      "type": "SAFETY_RELAY",
+      "name": "Safety Relay"
+    },
+    {
+      "id": 19,
+      "type": "PADLOCK",
+      "name": "Secondary Padlock"
+    },
+    {
+      "id": 20,
+      "type": "CONTROL_SWITCH",
+      "name": "Control Switch"
+    },
+    {
+      "id": 21,
+      "type": "EMERGENCY_STOP",
+      "name": "Machine Emergency Stop"
+    },
+    {
+      "id": 22,
+      "type": "BREAKER",
+      "name": "Motor Breaker"
+    },
+    {
+      "id": 23,
+      "type": "TAG",
+      "name": "Auxiliary Lockout Tag"
+    },
+    {
+      "id": 24,
+      "type": "SAFETY_LOCK",
+      "name": "Safety Lock"
+    },
+    {
+      "id": 25,
+      "type": "FUSE",
+      "name": "Backup Fuse"
+    }
+  ]
+}
