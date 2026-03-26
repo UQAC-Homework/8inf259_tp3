@@ -41,8 +41,8 @@
 #define MACHINE_H
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include "Device.h"
 
@@ -56,6 +56,7 @@ private:
 
 public:
 	Machine(int id, const std::string& name);
+	Machine(int id, const std::string& name, const std::vector<Device*>& relatedDevices, const std::vector<int>& dependsOn);
 
 	[[nodiscard]] int getId() const { return id; }
 	[[nodiscard]] std::string getName() const { return name; }

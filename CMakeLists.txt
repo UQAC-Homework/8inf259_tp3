@@ -13,4 +13,5 @@ add_executable(8inf259_tp3 main.cpp
         source/factories/DeviceFactory.cpp
         source/Device.cpp
         source/factories/MachineFactory.cpp
-        include/factories/MachineFactory.h)
+        include/factories/MachineFactory.h
+        source/Machine.cpp)
