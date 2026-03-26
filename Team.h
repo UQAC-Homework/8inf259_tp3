@@ -34,31 +34,26 @@
 #ifndef TEAM_H
 #define TEAM_H
 
-#include <fstream>
 #include <string>
 #include <vector>
 
-#include "include/json.hpp"
-
-using nlohmann::json;
-using namespace std;
-
-class Team {
+class Team
+{
 private:
-    string name;
-    vector<string> capabilities;
-    int maxCapacity;
+	std::string name;
+	std::vector<std::string> capabilities;
+	int maxCapacity;
 
 public:
-    Team(const string& name, const vector<string>& capabilities, int maxCapacity);
+	Team(const std::string& name, const std::vector<std::string>& capabilities, int maxCapacity);
 
-    string getName() const { return name; }
-    vector<string> getCapabilities() const { return capabilities; }
-    int getMaxCapacity() const { return maxCapacity; }
+	[[nodiscard]] std::string getName() const { return name; }
+	[[nodiscard]] std::vector<std::string> getCapabilities() const { return capabilities; }
+	[[nodiscard]] int getMaxCapacity() const { return maxCapacity; }
 
-    bool canHandle(const string& deviceType) const;
+	[[nodiscard]] bool canHandle(const std::string& deviceType) const;
 
-    static vector<Team*> BuildTeamsFromJsonFile(const string& filename);
+	static std::vector<Team*> BuildTeamsFromJsonFile(const std::string& filename);
 };
 
 #endif // TEAM_H

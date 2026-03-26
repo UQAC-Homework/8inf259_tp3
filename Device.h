@@ -42,24 +42,23 @@
 #include <string>
 #include <unordered_map>
 
-using namespace std;
-
-class Device {
+class Device
+{
 private:
-    int id;
-    string type;
-    string name;
-    int lockTime;
+	int id;
+	std::string type;
+	std::string name;
+	int lockTime;
 
 public:
-    Device(int id, const string& type, const string& name, int lockTime);
+	Device(int id, const std::string& type, const std::string& name, int lockTime);
 
-    int getId() const { return id; }
-    string getType() const { return type; }
-    string getName() const { return name; }
-    int getLockTime() const { return lockTime; }
+	[[nodiscard]] int getId() const { return id; }
+	[[nodiscard]] std::string getType() const { return type; }
+	[[nodiscard]] std::string getName() const { return name; }
+	[[nodiscard]] int getLockTime() const { return lockTime; }
 
-    static unordered_map<int, Device*> BuildDevicesFromJsonFile(const string& path);
+	static std::unordered_map<int, Device*> BuildDevicesFromJsonFile(const std::string& path);
 };
 
 #endif // DEVICE_H

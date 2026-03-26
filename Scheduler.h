@@ -129,7 +129,6 @@
 #define SCHEDULER_H
 
 #include <functional>
-#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -137,46 +136,45 @@
 #include "Machine.h"
 #include "Team.h"
 
-using namespace std;
-
-class Scheduler {
+class Scheduler
+{
 private:
-    // ════════════════════════════════════════════════════════════
-    //  À VOUS DE COMPLÉTER :
-    //  Quels attributs ? Quelles structures de données ?
-    //  Quelles méthodes utilitaires privées ?
-    //
-    //  Pensez à ce dont chaque méthode publique a besoin :
-    //    - Stocker les données d'entrée (devices, machines, teams)
-    //    - Représenter le graphe de dépendances
-    //    - Suivre l'état du scheduling (qui est verrouillé, charge
-    //      de chaque équipe, résultats par machine...)
-    //    - Stocker le makespan
-    // ════════════════════════════════════════════════════════════
+	// ════════════════════════════════════════════════════════════
+	//  À VOUS DE COMPLÉTER :
+	//  Quels attributs ? Quelles structures de données ?
+	//  Quelles méthodes utilitaires privées ?
+	//
+	//  Pensez à ce dont chaque méthode publique a besoin :
+	//    - Stocker les données d'entrée (devices, machines, teams)
+	//    - Représenter le graphe de dépendances
+	//    - Suivre l'état du scheduling (qui est verrouillé, charge
+	//      de chaque équipe, résultats par machine...)
+	//    - Stocker le makespan
+	// ════════════════════════════════════════════════════════════
 
 public:
-    Scheduler(const unordered_map<int, Device*>& devices,
-              const unordered_map<int, Machine*>& machines,
-              const vector<Team*>& teams);
+	Scheduler(const unordered_map<int, Device*>& devices,
+	          const unordered_map<int, Machine*>& machines,
+	          const vector<Team*>& teams);
 
-    // Analyse des données
-    void displayNotConnectedDevices();
-    void displayTeams();
+	// Analyse des données
+	void displayNotConnectedDevices();
+	void displayTeams();
 
-    // Graphe + tri topologique
-    void buildDependencyGraph();
-    bool hasCycle() const;
-    vector<int> topologicalSort(
-        const function<bool(const Machine*, const Machine*)>& tieBreaker);
+	// Graphe + tri topologique
+	void buildDependencyGraph();
+	[[nodiscard]] bool hasCycle() const;
+	vector<int> topologicalSort(
+		const function<bool(const Machine*, const Machine*)>& tieBreaker);
 
-    // Scheduling
-    void schedule();
-    int getMakespan() const;
+	// Scheduling
+	void schedule();
+	[[nodiscard]] int getMakespan() const;
 
-    // Affichage
-    void displaySummary();
-    void displayGantt();
-    void displayStats();
+	// Affichage
+	void displaySummary();
+	void displayGantt();
+	void displayStats();
 };
 
 #endif // SCHEDULER_H

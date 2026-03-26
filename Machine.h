@@ -46,26 +46,25 @@
 
 #include "Device.h"
 
-using namespace std;
-
-class Machine {
+class Machine
+{
 private:
-    int id;
-    string name;
-    vector<Device*> relatedDevices;
-    vector<int> dependsOn;
+	int id;
+	std::string name;
+	std::vector<Device*> relatedDevices;
+	std::vector<int> dependsOn;
 
 public:
-    Machine(int id, const string& name);
+	Machine(int id, const std::string& name);
 
-    int getId() const { return id; }
-    string getName() const { return name; }
-    vector<Device*> getRelatedDevices() const { return relatedDevices; }
-    vector<int> getDependsOn() const { return dependsOn; }
+	[[nodiscard]] int getId() const { return id; }
+	[[nodiscard]] std::string getName() const { return name; }
+	[[nodiscard]] std::vector<Device*> getRelatedDevices() const { return relatedDevices; }
+	[[nodiscard]] std::vector<int> getDependsOn() const { return dependsOn; }
 
-    static unordered_map<int, Machine*> BuildMachinesFromJsonFile(
-        const string& path,
-        const unordered_map<int, Device*>& devices);
+	static std::unordered_map<int, Machine*> BuildMachinesFromJsonFile(
+		const std::string& path,
+		const std::unordered_map<int, Device*>& devices);
 };
 
 #endif // MACHINE_H
