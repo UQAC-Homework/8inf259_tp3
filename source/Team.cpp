@@ -6,6 +6,13 @@
 #include "../include/factories/TeamFactory.h"
 #include "../include/library/json.hpp"
 
+Team::Team(const std::string& name, const std::vector<std::string>& capabilities, int maxCapacity)
+{
+	this->name = name;
+	this->capabilities = capabilities;
+	this->maxCapacity = maxCapacity;
+}
+
 std::vector<Team*> Team::BuildTeamsFromJsonFile(const std::string& filename)
 {
 	if (!std::filesystem::exists(filename))
