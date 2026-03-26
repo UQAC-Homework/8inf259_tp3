@@ -13,6 +13,16 @@ Team::Team(const std::string& name, const std::vector<std::string>& capabilities
 	this->maxCapacity = maxCapacity;
 }
 
+bool Team::canHandle(const std::string& deviceType) const
+{
+	const auto it = std::ranges::find(
+		this->capabilities,
+		deviceType
+	);
+
+	return it != this->capabilities.end();
+}
+
 std::vector<Team*> Team::BuildTeamsFromJsonFile(const std::string& filename)
 {
 	if (!std::filesystem::exists(filename))
