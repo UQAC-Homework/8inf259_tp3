@@ -46,7 +46,8 @@ std::unordered_map<int, Device*> DeviceFactory::loadFromJson(const nlohmann::bas
 		auto device = loadDevice(deviceItem.value());
 		const auto id = device.getId();
 
-		devices.insert({id, &device});
+		auto devicePtr = new Device(device);
+		devices.insert({id, devicePtr});
 	}
 
 	return devices;
