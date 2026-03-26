@@ -1,0 +1,40 @@
+{
+  "machines": [
+    {
+      "id": 1,
+      "name": "Mixer",
+      "related_devices": [1, 7, 13],
+      "depends_on": []
+    },
+    {
+      "id": 2,
+      "name": "Heater",
+      "related_devices": [2, 8, 14],
+      "depends_on": [1]
+    },
+    {
+      "id": 3,
+      "name": "Centrifuge",
+      "related_devices": [3, 9, 15],
+      "depends_on": [1]
+    },
+    {
+      "id": 4,
+      "name": "Dryer",
+      "related_devices": [4, 10, 16],
+      "depends_on": [2, 3]
+    },
+    {
+      "id": 5,
+      "name": "Packager",
+      "related_devices": [5, 11, 17],
+      "depends_on": [4]
+    },
+    {
+      "id": 6,
+      "name": "Palletizer",
+      "related_devices": [6, 12, 18],
+      "depends_on": [5]
+    }
+  ]
+}

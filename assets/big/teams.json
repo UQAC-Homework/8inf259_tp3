@@ -1,0 +1,19 @@
+{
+  "teams": [
+    {
+      "name": "Alpha",
+      "capabilities": ["BREAKER", "CIRCUIT_BREAKER", "DISCONNECT_SWITCH", "TAG", "PADLOCK", "FUSE"],
+      "max_capacity": 4
+    },
+    {
+      "name": "Beta",
+      "capabilities": ["VALVE", "PRESSURE_GAUGE", "FLOW_METER", "EMERGENCY_STOP"],
+      "max_capacity": 3
+    },
+    {
+      "name": "Gamma",
+      "capabilities": ["CONTROL_SWITCH", "SAFETY_RELAY", "SAFETY_LOCK", "PADLOCK", "TAG"],
+      "max_capacity": 3
+    }
+  ]
+}

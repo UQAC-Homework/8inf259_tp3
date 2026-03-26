@@ -1,0 +1,16 @@
+{
+  "devices": [
+    { "id": 1,  "type": "VALVE",            "name": "Compressor Inlet Valve",   "lock_time": 3 },
+    { "id": 2,  "type": "BREAKER",          "name": "Compressor Breaker",       "lock_time": 2 },
+    { "id": 3,  "type": "PRESSURE_GAUGE",   "name": "Compressor Gauge",         "lock_time": 4 },
+    { "id": 4,  "type": "CIRCUIT_BREAKER",  "name": "Reactor Circuit Breaker",  "lock_time": 5 },
+    { "id": 5,  "type": "TAG",              "name": "Reactor Lockout Tag",       "lock_time": 1 },
+    { "id": 6,  "type": "EMERGENCY_STOP",   "name": "Reactor Emergency Stop",   "lock_time": 1 },
+    { "id": 7,  "type": "VALVE",            "name": "Condenser Valve",          "lock_time": 3 },
+    { "id": 8,  "type": "FUSE",             "name": "Condenser Fuse",           "lock_time": 2 },
+    { "id": 9,  "type": "SAFETY_RELAY",     "name": "Condenser Safety Relay",   "lock_time": 4 },
+    { "id": 10, "type": "BREAKER",          "name": "Fan Breaker",              "lock_time": 2 },
+    { "id": 11, "type": "TAG",              "name": "Fan Lockout Tag",           "lock_time": 1 },
+    { "id": 12, "type": "DISCONNECT_SWITCH","name": "Fan Disconnect",           "lock_time": 2 }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "machines": [
+    {
+      "id": 1,
+      "name": "Compressor",
+      "related_devices": [1, 2, 3],
+      "depends_on": [3]
+    },
+    {
+      "id": 2,
+      "name": "Reactor",
+      "related_devices": [4, 5, 6],
+      "depends_on": [1]
+    },
+    {
+      "id": 3,
+      "name": "Condenser",
+      "related_devices": [7, 8, 9],
+      "depends_on": [2]
+    },
+    {
+      "id": 4,
+      "name": "Exhaust Fan",
+      "related_devices": [10, 11, 12],
+      "depends_on": []
+    }
+  ]
+}
