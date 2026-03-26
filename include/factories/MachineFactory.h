@@ -1,0 +1,12 @@
+#ifndef INC_8INF259_TP3_MACHINEFACTORY_H
+#define INC_8INF259_TP3_MACHINEFACTORY_H
+
+
+
+class MachineFactory {
+
+};
+
+
+
+#endif //INC_8INF259_TP3_MACHINEFACTORY_H
