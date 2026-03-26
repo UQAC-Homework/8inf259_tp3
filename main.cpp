@@ -22,6 +22,8 @@
 
 int main()
 {
+	const auto devices2 = Device::BuildDevicesFromJsonFile(ASSETS_PATH("devices.json"));
+	return 0;
 	// =======================================================
 	//  PHASE 1 : Chargement des données
 	// =======================================================
