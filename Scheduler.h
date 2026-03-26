@@ -129,8 +129,6 @@
 #define SCHEDULER_H
 
 #include <functional>
-#include <unordered_map>
-#include <vector>
 
 #include "Device.h"
 #include "Machine.h"
@@ -153,9 +151,9 @@ private:
 	// ════════════════════════════════════════════════════════════
 
 public:
-	Scheduler(const unordered_map<int, Device*>& devices,
-	          const unordered_map<int, Machine*>& machines,
-	          const vector<Team*>& teams);
+	Scheduler(const std::unordered_map<int, Device*>& devices,
+	          const std::unordered_map<int, Machine*>& machines,
+	          const std::vector<Team*>& teams);
 
 	// Analyse des données
 	void displayNotConnectedDevices();
@@ -164,8 +162,8 @@ public:
 	// Graphe + tri topologique
 	void buildDependencyGraph();
 	[[nodiscard]] bool hasCycle() const;
-	vector<int> topologicalSort(
-		const function<bool(const Machine*, const Machine*)>& tieBreaker);
+	std::vector<int> topologicalSort(
+		const std::function<bool(const Machine*, const Machine*)>& tieBreaker);
 
 	// Scheduling
 	void schedule();
