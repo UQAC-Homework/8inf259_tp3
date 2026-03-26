@@ -8,4 +8,6 @@ add_executable(8inf259_tp3 main.cpp
         Device.h
         Machine.h
         Scheduler.h
-        Team.h)
+        Team.h
+        include/factories/DeviceFactory.h
+        source/factories/DeviceFactory.cpp)
