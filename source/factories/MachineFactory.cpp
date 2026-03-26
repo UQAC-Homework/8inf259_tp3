@@ -85,5 +85,19 @@ std::unordered_map<int, Machine*> MachineFactory::loadFromJson(
 		machines.insert({id, machinePtr});
 	}
 
+	for (const auto machine : machines | std::views::values)
+	{
+		auto dependencies = machine->getDependsOn();
+
+		for (auto dependency : dependencies)
+		{
+			if (machines.contains(dependency))
+				continue;
+
+			throw std::invalid_argument(
+				"A machine depends on '" + std::to_string(dependency) + "', but it does not exist.");
+		}
+	}
+
 	return machines;
 }
