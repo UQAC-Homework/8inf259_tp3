@@ -3,4 +3,5 @@ project(8inf259_tp3)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(8inf259_tp3 main.cpp)
+add_executable(8inf259_tp3 main.cpp
+        include/library/json.hpp)
