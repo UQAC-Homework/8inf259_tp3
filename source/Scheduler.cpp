@@ -2,6 +2,8 @@
 
 #include <format>
 #include <iostream>
+#include <ranges>
+#include <unordered_set>
 
 #include "../include/library/string.h"
 
@@ -11,12 +13,40 @@ Scheduler::Scheduler(
 	const std::vector<Team*>& teams
 )
 {
+	this->_devices = devices;
+	this->_machines = machines;
 	this->_teams = teams;
 }
 
 void Scheduler::displayNotConnectedDevices()
 {
-	// std::unordered_map<Device*, std::vector<Machine*>>
+	std::unordered_set<int> connectedDevices;
+	
+	for (const auto machine : this->_machines | std::views::values)
+	{
+		for (const auto device : machine->getRelatedDevices())
+			connectedDevices.insert(device->getId());
+	}
+
+	std::cout << "=== DEVICES NOT CONNECTED TO ANY MACHINE ===" << std::endl;
+	
+	for (const auto device : this->_devices | std::views::values)
+	{
+		const auto id = device->getId();
+
+		if (connectedDevices.contains(id))
+			continue;
+		
+		auto message = std::format(
+			"- Device {} ( {} ) is not connected",
+			id,
+			device->getName()
+		);
+		
+		std::cout << message << std::endl;
+	}
+
+	std::cout << std::endl;
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst

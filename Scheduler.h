@@ -150,6 +150,8 @@ private:
 	//    - Stocker le makespan
 	// ════════════════════════════════════════════════════════════
 
+	std::unordered_map<int, Device*> _devices;
+	std::unordered_map<int, Machine*> _machines;
 	std::vector<Team*> _teams;
 
 public:
