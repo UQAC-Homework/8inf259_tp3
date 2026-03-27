@@ -99,7 +99,7 @@ void Scheduler::buildDependencyGraph()
 bool Scheduler::hasCycle() const
 {
 	// TODO: Check if DFS is faster than Kahn's Algorithm 
-	// Original logic from: https://www.geeksforgeeks.org/dsa/topological-sorting-indegree-based-solution/
+	// Algorithm from: https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 	std::unordered_map<Machine*, int> machinesInDegree;
 
 	for (const auto& [machine, dependencies] : this->_dependencyGraph)
