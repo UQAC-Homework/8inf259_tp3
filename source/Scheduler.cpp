@@ -38,6 +38,8 @@ void Scheduler::displayTeams()
 		
 		std::cout << message << std::endl;
 	}
+
+	std::cout << std::endl;
 }
 
 void Scheduler::buildDependencyGraph()
