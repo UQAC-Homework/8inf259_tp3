@@ -2,6 +2,7 @@
 
 #include <format>
 #include <iostream>
+#include <queue>
 #include <ranges>
 #include <unordered_set>
 
@@ -97,8 +98,69 @@ void Scheduler::buildDependencyGraph()
 
 bool Scheduler::hasCycle() const
 {
-	// std::unordered_set<Machine*>
-	// DFS
+	// TODO: Check if DFS is faster than Kahn's Algorithm 
+	// Original logic from: https://www.geeksforgeeks.org/dsa/topological-sorting-indegree-based-solution/
+	std::unordered_map<Machine*, int> machinesInDegree;
+
+	for (const auto& [machine, dependencies] : this->_dependencyGraph)
+	{
+		if (!machinesInDegree.contains(machine))
+			machinesInDegree.insert({machine, 0});
+
+		for (const auto dependency : dependencies)
+		{
+			if (!machinesInDegree.contains(dependency))
+				machinesInDegree.insert({dependency, 0});
+
+			machinesInDegree[dependency]++;
+		}
+	}
+
+	std::queue<Machine*> machineToExplore;
+
+	for (const auto [machine, inDegree] : machinesInDegree)
+	{
+		if (inDegree > 0)
+			continue;
+
+		machineToExplore.push(machine);
+	}
+
+	if (machineToExplore.empty())
+		return true;
+
+	while (!machineToExplore.empty())
+	{
+		auto currentMachine = machineToExplore.front();
+		machineToExplore.pop();
+
+		if (!this->_dependencyGraph.contains(currentMachine))
+			continue;
+
+		for (auto dependency : this->_dependencyGraph.at(currentMachine))
+		{
+			if (machinesInDegree.at(dependency) == 0)
+				return true;
+
+			if (machinesInDegree.at(dependency) == 1)
+			{
+				machinesInDegree.at(dependency) = 0;
+				machineToExplore.push(dependency);
+				continue;
+			}
+
+			machinesInDegree[dependency]--;
+		}
+	}
+
+	return std::any_of(
+		machinesInDegree.cbegin(),
+		machinesInDegree.cend(),
+		[](const std::pair<Machine*, int>& entry)
+		{
+			return entry.second > 0;
+		}
+	);
 }
 
 std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machine*, const Machine*)>& tieBreaker)
