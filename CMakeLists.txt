@@ -19,4 +19,6 @@ add_executable(8inf259_tp3 main.cpp
         source/Machine.cpp
         source/factories/TeamFactory.cpp
         include/factories/TeamFactory.h
-        source/Team.cpp)
+        source/Team.cpp
+        source/Scheduler.cpp
+        include/library/string.h)

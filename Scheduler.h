@@ -150,6 +150,8 @@ private:
 	//    - Stocker le makespan
 	// ════════════════════════════════════════════════════════════
 
+	std::vector<Team*> _teams;
+
 public:
 	Scheduler(const std::unordered_map<int, Device*>& devices,
 	          const std::unordered_map<int, Machine*>& machines,
