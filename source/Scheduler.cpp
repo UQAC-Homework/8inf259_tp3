@@ -16,12 +16,13 @@ Scheduler::Scheduler(
 	this->_devices = devices;
 	this->_machines = machines;
 	this->_teams = teams;
+	this->_dependencyGraph = {};
 }
 
 void Scheduler::displayNotConnectedDevices()
 {
 	std::unordered_set<Device*> connectedDevices;
-	
+
 	for (const auto machine : this->_machines | std::views::values)
 	{
 		for (const auto device : machine->getRelatedDevices())
@@ -29,18 +30,18 @@ void Scheduler::displayNotConnectedDevices()
 	}
 
 	std::cout << "=== DEVICES NOT CONNECTED TO ANY MACHINE ===" << std::endl;
-	
+
 	for (const auto device : this->_devices | std::views::values)
 	{
 		if (connectedDevices.contains(device))
 			continue;
-		
+
 		auto message = std::format(
 			"- Device {} ( {} ) is not connected",
 			device->getId(),
 			device->getName()
 		);
-		
+
 		std::cout << message << std::endl;
 	}
 
@@ -63,7 +64,7 @@ void Scheduler::displayTeams()
 				", "
 			)
 		);
-		
+
 		std::cout << message << std::endl;
 	}
 
@@ -72,7 +73,26 @@ void Scheduler::displayTeams()
 
 void Scheduler::buildDependencyGraph()
 {
-	// ???
+	this->_dependencyGraph.clear();
+
+	for (const auto machine : this->_machines | std::views::values)
+	{
+		const auto dependenciesId = machine->getDependsOn();
+
+		if (dependenciesId.empty())
+			continue;
+
+		std::unordered_set<Machine*> dependencies;
+
+		for (const auto dependencyId : dependenciesId)
+		{
+			const auto dependency = this->_machines.at(dependencyId);
+
+			dependencies.insert(dependency);
+		}
+
+		this->_dependencyGraph.insert({machine, dependencies});
+	}
 }
 
 bool Scheduler::hasCycle() const

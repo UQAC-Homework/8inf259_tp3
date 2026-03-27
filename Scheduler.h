@@ -129,6 +129,7 @@
 #define SCHEDULER_H
 
 #include <functional>
+#include <unordered_set>
 
 #include "Device.h"
 #include "Machine.h"
@@ -153,6 +154,8 @@ private:
 	std::unordered_map<int, Device*> _devices;
 	std::unordered_map<int, Machine*> _machines;
 	std::vector<Team*> _teams;
+
+	std::unordered_map<Machine*, std::unordered_set<Machine*>> _dependencyGraph;
 
 public:
 	Scheduler(const std::unordered_map<int, Device*>& devices,
