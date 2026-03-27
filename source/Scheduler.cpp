@@ -19,6 +19,7 @@ void Scheduler::displayNotConnectedDevices()
 	// std::unordered_map<Device*, std::vector<Machine*>>
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void Scheduler::displayTeams()
 {
 	std::cout << "=== TEAMS ===" << std::endl;
