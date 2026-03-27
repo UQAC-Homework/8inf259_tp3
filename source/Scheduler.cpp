@@ -20,26 +20,24 @@ Scheduler::Scheduler(
 
 void Scheduler::displayNotConnectedDevices()
 {
-	std::unordered_set<int> connectedDevices;
+	std::unordered_set<Device*> connectedDevices;
 	
 	for (const auto machine : this->_machines | std::views::values)
 	{
 		for (const auto device : machine->getRelatedDevices())
-			connectedDevices.insert(device->getId());
+			connectedDevices.insert(device);
 	}
 
 	std::cout << "=== DEVICES NOT CONNECTED TO ANY MACHINE ===" << std::endl;
 	
 	for (const auto device : this->_devices | std::views::values)
 	{
-		const auto id = device->getId();
-
-		if (connectedDevices.contains(id))
+		if (connectedDevices.contains(device))
 			continue;
 		
 		auto message = std::format(
 			"- Device {} ( {} ) is not connected",
-			id,
+			device->getId(),
 			device->getName()
 		);
 		
