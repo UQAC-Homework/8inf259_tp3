@@ -126,7 +126,8 @@ bool Scheduler::hasCycle() const
 			continue;
 		}
 
-		machineToExplore.push(machine);
+		machineToExplore.push(it->first);
+		it = machinesInDegree.erase(it);
 	}
 
 	if (machineToExplore.empty())
