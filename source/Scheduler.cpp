@@ -118,10 +118,13 @@ bool Scheduler::hasCycle() const
 
 	std::queue<Machine*> machineToExplore;
 
-	for (const auto [machine, inDegree] : machinesInDegree)
+	for (auto it = machinesInDegree.cbegin(); it != machinesInDegree.cend();)
 	{
-		if (inDegree > 0)
+		if (it->second > 0)
+		{
+			++it;
 			continue;
+		}
 
 		machineToExplore.push(machine);
 	}
@@ -139,28 +142,23 @@ bool Scheduler::hasCycle() const
 
 		for (auto dependency : this->_dependencyGraph.at(currentMachine))
 		{
-			if (machinesInDegree.at(dependency) == 0)
+			const auto inDegreeIt = machinesInDegree.find(dependency);
+
+			if (inDegreeIt == machinesInDegree.cend())
 				return true;
 
-			if (machinesInDegree.at(dependency) == 1)
+			if (inDegreeIt->second == 1)
 			{
-				machinesInDegree.at(dependency) = 0;
+				machinesInDegree.erase(inDegreeIt);
 				machineToExplore.push(dependency);
 				continue;
 			}
 
-			machinesInDegree[dependency]--;
+			inDegreeIt->second--;
 		}
 	}
 
-	return std::any_of(
-		machinesInDegree.cbegin(),
-		machinesInDegree.cend(),
-		[](const std::pair<Machine*, int>& entry)
-		{
-			return entry.second > 0;
-		}
-	);
+	return !machinesInDegree.empty();
 }
 
 std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machine*, const Machine*)>& tieBreaker)
