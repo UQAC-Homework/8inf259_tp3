@@ -155,6 +155,7 @@ private:
 	std::unordered_map<int, Machine*> _machines;
 	std::vector<Team*> _teams;
 
+	/// Graph from dependency to dependents
 	std::unordered_map<Machine*, std::unordered_set<Machine*>> _dependencyGraph;
 
 public:
@@ -170,7 +171,8 @@ public:
 	void buildDependencyGraph();
 	[[nodiscard]] bool hasCycle() const;
 	std::vector<int> topologicalSort(
-		const std::function<bool(const Machine*, const Machine*)>& tieBreaker);
+		const std::function<bool(const Machine*, const Machine*)>& tieBreaker
+	);
 
 	// Scheduling
 	void schedule();

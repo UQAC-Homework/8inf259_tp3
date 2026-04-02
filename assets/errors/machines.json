@@ -22,7 +22,7 @@
       "id": 4,
       "name": "Exhaust Fan",
       "related_devices": [10, 11, 12],
-      "depends_on": []
+      "depends_on": [1]
     }
   ]
 }

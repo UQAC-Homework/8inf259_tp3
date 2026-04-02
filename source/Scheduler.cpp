@@ -83,38 +83,22 @@ void Scheduler::buildDependencyGraph()
 		if (dependenciesId.empty())
 			continue;
 
-		std::unordered_set<Machine*> dependencies;
-
 		for (const auto dependencyId : dependenciesId)
 		{
 			const auto dependency = this->_machines.at(dependencyId);
 
-			dependencies.insert(dependency);
+			this->_dependencyGraph[dependency].insert(machine);
 		}
-
-		this->_dependencyGraph.insert({machine, dependencies});
 	}
 }
 
 bool Scheduler::hasCycle() const
 {
-	// TODO: Check if DFS is faster than Kahn's Algorithm 
 	// Algorithm from: https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
-	std::unordered_map<Machine*, int> machinesInDegree;
+	std::unordered_map<Machine*, std::size_t> machinesInDegree;
 
-	for (const auto& [machine, dependencies] : this->_dependencyGraph)
-	{
-		if (!machinesInDegree.contains(machine))
-			machinesInDegree.insert({machine, 0});
-
-		for (const auto dependency : dependencies)
-		{
-			if (!machinesInDegree.contains(dependency))
-				machinesInDegree.insert({dependency, 0});
-
-			machinesInDegree[dependency]++;
-		}
-	}
+	for (auto machine : this->_machines | std::views::values)
+		machinesInDegree[machine] = machine->getDependsOn().size();
 
 	std::queue<Machine*> machineToExplore;
 
@@ -130,32 +114,30 @@ bool Scheduler::hasCycle() const
 		it = machinesInDegree.erase(it);
 	}
 
-	if (machineToExplore.empty())
-		return true;
-
 	while (!machineToExplore.empty())
 	{
 		auto currentMachine = machineToExplore.front();
 		machineToExplore.pop();
 
-		if (!this->_dependencyGraph.contains(currentMachine))
+		auto dependenciesIt = this->_dependencyGraph.find(currentMachine);
+
+		if (dependenciesIt == this->_dependencyGraph.end())
 			continue;
 
-		for (auto dependency : this->_dependencyGraph.at(currentMachine))
+		for (auto dependency : dependenciesIt->second)
 		{
 			const auto inDegreeIt = machinesInDegree.find(dependency);
 
 			if (inDegreeIt == machinesInDegree.cend())
-				return true;
+				continue;
 
-			if (inDegreeIt->second == 1)
+			inDegreeIt->second--;
+
+			if (inDegreeIt->second == 0)
 			{
 				machinesInDegree.erase(inDegreeIt);
 				machineToExplore.push(dependency);
-				continue;
 			}
-
-			inDegreeIt->second--;
 		}
 	}
 
@@ -164,8 +146,69 @@ bool Scheduler::hasCycle() const
 
 std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machine*, const Machine*)>& tieBreaker)
 {
+	std::unordered_map<Machine*, std::size_t> machinesInDegree;
+
+	for (auto machine : this->_machines | std::views::values)
+		machinesInDegree[machine] = machine->getDependsOn().size();
+
+	std::priority_queue<
+		Machine*,
+		std::vector<Machine*>,
+		decltype(tieBreaker)
+	> machinesToProcess(tieBreaker);
+
+	for (auto it = machinesInDegree.cbegin(); it != machinesInDegree.cend();)
+	{
+		if (it->second > 0)
+		{
+			++it;
+			continue;
+		}
+
+		machinesToProcess.push(it->first);
+		it = machinesInDegree.erase(it);
+	}
+
+	std::vector<Machine*> machineOrder;
+
+	while (!machinesToProcess.empty())
+	{
+		auto current = machinesToProcess.top();
+		machinesToProcess.pop();
+
+		machineOrder.push_back(current);
+
+		auto it = this->_dependencyGraph.find(current);
+
+		if (it == this->_dependencyGraph.cend())
+			continue;
+
+		for (Machine* dependent : it->second)
+		{
+			auto& deg = machinesInDegree[dependent];
+			deg--;
+
+			if (deg > 0)
+				continue;
+
+			machinesToProcess.push(dependent);
+		}
+	}
+
+	std::vector<int> result(machineOrder.size());
+
+	std::transform(
+		machineOrder.begin(),
+		machineOrder.end(),
+		result.begin(),
+		[](const Machine* machine)
+		{
+			return machine->getId();
+		}
+	);
+
 	// std::priority_queue<Machine*, std::vector<Machine*>, decltype(tieBreaker)>
-	// BFS
+	return result;
 }
 
 void Scheduler::schedule()

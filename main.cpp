@@ -1,12 +1,3 @@
-//
-// main.cpp — 8INF259 TP3
-//
-// Phase 1 : Chargement (Device, Machine, Team)
-// Phase 2 : Logique de base via Manager (rétrocompatibilité)
-// Phase 3 : Ordonnancement avancé via Scheduler
-// Phase 4 : Déverrouillage LIFO
-//
-
 #include <iostream>
 #include "Device.h"
 #include "Machine.h"
@@ -14,7 +5,7 @@
 #include "Team.h"
 
 // Changer le ASSETS_TYPE pour : small, big, errors ou balanced (en fonction de vos tests)
-#define ASSETS_TYPE balanced
+#define ASSETS_TYPE small
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x)  STRINGIFY(x)
@@ -52,6 +43,7 @@ int main()
 	{
 		return m1->getId() < m2->getId();
 	});
+	return 0;
 
 	// --- Scheduling glouton ---
 	scheduler.schedule();
