@@ -22,6 +22,6 @@ add_executable(8inf259_tp3 main.cpp
         source/Team.cpp
         source/Scheduler.cpp
         include/library/string.h
-        include/ds/Schedule.cpp
+        source/ds/Schedule.cpp
         include/ds/Schedule.h
         include/ds/Schedule.h)
