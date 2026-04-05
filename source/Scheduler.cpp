@@ -284,7 +284,7 @@ std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machi
 void Scheduler::schedule()
 {
 	const auto machinesId = this->topologicalSort(defaultTieBreaker);
-	std::vector<Machine*> machines;
+	std::vector<const Machine*> machines;
 	machines.reserve(machinesId.size());
 
 	for (const auto machineId : machinesId)

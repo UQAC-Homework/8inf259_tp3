@@ -18,8 +18,10 @@ namespace ds
 	struct Schedule
 	{
 	private:
+		std::vector<const Machine*> _machines;
+
 		/// List of every device locked by the following machine 
-		std::unordered_map<const Device*, const Machine*> lockedDevices;
+		std::unordered_map<const Device*, const Machine*> _lockedDevices;
 
 		/// List of every entry for each team
 		std::unordered_map<const Team*, std::vector<ScheduleEntry>> _teamRecordEntries;
@@ -49,7 +51,7 @@ namespace ds
 		double getEfficiency() const;
 		
 		/// Creates a schedule of tasks from the given information
-		static Schedule createSchedule(const std::vector<Machine*>& machines, const std::vector<Team*>& teams);
+		static Schedule createSchedule(const std::vector<const Machine*>& machines, const std::vector<Team*>& teams);
 	};
 }
 

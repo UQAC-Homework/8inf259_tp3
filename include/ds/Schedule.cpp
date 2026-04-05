@@ -7,20 +7,20 @@ ds::Schedule::Schedule() = default;
 
 bool ds::Schedule::isDeviceLocked(const Device* device) const
 {
-	return this->lockedDevices.contains(device);
+	return this->_lockedDevices.contains(device);
 }
 
 void ds::Schedule::lockDevice(const Team* team, Device* device, Machine* machine, std::size_t time)
 {
-	this->lockedDevices.insert({device, machine});
+	this->_lockedDevices.insert({device, machine});
 	this->_teamRecordEntries[team].emplace_back(device, time);
 }
 
 const Machine* ds::Schedule::getLockResponsible(const Device* device) const
 {
-	const auto lockedDeviceIt = this->lockedDevices.find(device);
+	const auto lockedDeviceIt = this->_lockedDevices.find(device);
 
-	if (lockedDeviceIt == this->lockedDevices.end())
+	if (lockedDeviceIt == this->_lockedDevices.end())
 		return nullptr;
 
 	return lockedDeviceIt->second;
@@ -28,7 +28,7 @@ const Machine* ds::Schedule::getLockResponsible(const Device* device) const
 
 std::size_t ds::Schedule::getLockedCount() const
 {
-	return this->lockedDevices.size();
+	return this->_lockedDevices.size();
 }
 
 std::size_t ds::Schedule::getTotalDuration() const
@@ -85,9 +85,11 @@ double ds::Schedule::getEfficiency() const
 	return totalUsedTime / static_cast<double>(totalDuration) * 100.0;
 }
 
-ds::Schedule ds::Schedule::createSchedule(const std::vector<Machine*>& machines, const std::vector<Team*>& teams)
+ds::Schedule ds::Schedule::createSchedule(const std::vector<const Machine*>& machines, const std::vector<Team*>& teams)
 {
 	Schedule schedule;
+	schedule._machines = machines;
+
 	std::unordered_map<Team*, std::unordered_map<Machine*, std::size_t>> devicesAssignedPerTeamPerMachine;
 	std::unordered_map<Team*, std::size_t> teamNextFreeAt;
 
