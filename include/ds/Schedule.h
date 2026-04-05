@@ -24,6 +24,9 @@ namespace ds
 		/// List of every entry for each team
 		std::unordered_map<const Team*, std::vector<ScheduleEntry>> _teamRecordEntries;
 
+		/// List of every device skipped by a given machine
+		std::unordered_map<const Machine*, std::vector<const Device*>> _skippedDevices;
+
 	public:
 		/// Checks if the given device is locked
 		[[nodiscard]] bool isDeviceLocked(const Device* device) const;
@@ -31,11 +34,17 @@ namespace ds
 		/// Locks the given device by the given machine
 		void lockDevice(const Team* team, Device* device, const Machine* machine, std::size_t time);
 
+		/// Records that the given machine has skipped the given device
+		void recordSkippedDevice(const Machine* machine, const Device* device);
+
 		/// Gets the machine responsible for the lock of the given device
 		[[nodiscard]] const Machine* getLockResponsible(const Device* device) const;
 
 		/// Gets the amount of devices locked
 		[[nodiscard]] std::size_t getLockedCount() const;
+		
+		/// Gets the amount of devices locking skipped
+		[[nodiscard]] std::size_t getSkippedCount() const;
 
 		/// Gets the amount of locks from the given team
 		[[nodiscard]] std::size_t getTeamLockCount(const Team* team) const;

@@ -296,7 +296,10 @@ void Scheduler::schedule()
 		for (const auto device : machine->getRelatedDevices())
 		{
 			if (schedule.isDeviceLocked(device))
+			{
+				schedule.recordSkippedDevice(machine, device);
 				continue;
+			}
 
 			const auto deviceType = device->getType();
 			Team* bestTeam = nullptr;
@@ -446,7 +449,10 @@ void Scheduler::displayStats()
 		this->_devices.size()
 	) << std::endl;
 
-	//       - Le nombre de "already locked" skips
+	std::cout << std::format(
+		"Already-locked skips : {}",
+		this->lastSchedule.getSkippedCount()
+	) << std::endl;
 
 	std::cout << std::format(
 		"Efficiency : {}% (useful_time / total_available_time)",

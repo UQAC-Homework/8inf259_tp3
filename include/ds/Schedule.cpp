@@ -14,6 +14,11 @@ void ds::Schedule::lockDevice(const Team* team, Device* device, const Machine* m
 	this->_teamRecordEntries[team].emplace_back(device, time);
 }
 
+void ds::Schedule::recordSkippedDevice(const Machine* machine, const Device* device)
+{
+	this->_skippedDevices[machine].emplace_back(device);
+}
+
 const Machine* ds::Schedule::getLockResponsible(const Device* device) const
 {
 	const auto lockedDeviceIt = this->_lockedDevices.find(device);
@@ -27,6 +32,16 @@ const Machine* ds::Schedule::getLockResponsible(const Device* device) const
 std::size_t ds::Schedule::getLockedCount() const
 {
 	return this->_lockedDevices.size();
+}
+
+std::size_t ds::Schedule::getSkippedCount() const
+{
+	std::size_t count = 0;
+
+	for (const auto& devices : this->_skippedDevices | std::views::values)
+		count += devices.size();
+
+	return count;
 }
 
 std::size_t ds::Schedule::getTeamLockCount(const Team* team) const
