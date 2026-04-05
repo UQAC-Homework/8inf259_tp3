@@ -1,6 +1,7 @@
 #ifndef INC_8INF259_TP3_SCHEDULE_H
 #define INC_8INF259_TP3_SCHEDULE_H
 #include <unordered_map>
+#include <unordered_set>
 
 #include "../../Device.h"
 #include "../../Machine.h"
@@ -18,8 +19,8 @@ namespace ds
 	struct Schedule
 	{
 	private:
-		/// List of every device locked by the following machine 
-		std::unordered_map<const Device*, const Machine*> _lockedDevices;
+		/// List of every device locked
+		std::unordered_set<const Device*> _lockedDevices;
 
 		/// List of every entry for each team
 		std::unordered_map<const Team*, std::vector<ScheduleEntry>> _teamRecordEntries;
@@ -32,7 +33,7 @@ namespace ds
 		[[nodiscard]] bool isDeviceLocked(const Device* device) const;
 
 		/// Locks the given device by the given machine
-		void lockDevice(const Team* team, Device* device, const Machine* machine, std::size_t time);
+		void lockDevice(const Team* team, Device* device, size_t time);
 
 		/// Records that the given machine has skipped the given device
 		void recordSkippedDevice(const Machine* machine, const Device* device);
