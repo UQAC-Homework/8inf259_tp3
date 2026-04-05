@@ -45,9 +45,16 @@
 class Device
 {
 private:
+	/// Unique identifier of this device
 	int id;
+
+	/// Type of this device
 	std::string type;
+
+	/// Name of this device
 	std::string name;
+
+	/// Time required to lock this device
 	int lockTime;
 
 public:
@@ -58,6 +65,7 @@ public:
 	[[nodiscard]] std::string getName() const { return name; }
 	[[nodiscard]] int getLockTime() const { return lockTime; }
 
+	/// Loads every device in the given file, and returns them by their identifier
 	static std::unordered_map<int, Device*> BuildDevicesFromJsonFile(const std::string& path);
 };
 
