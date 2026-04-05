@@ -26,7 +26,7 @@ namespace ds
 
 	public:
 		/// Checks if the given device is locked
-		[[nodiscard]] bool isDeviceLocked(Device* device) const;
+		[[nodiscard]] bool isDeviceLocked(const Device* device) const;
 
 		/// Locks the given device by the given machine
 		void lockDevice(const Team* team, Device* device, Machine* machine, std::size_t time);
@@ -42,6 +42,9 @@ namespace ds
 
 		/// Gets the record entry from the given team recorded within the given time
 		const ScheduleEntry* getRecordEntry(const Team* team, std::size_t time) const;
+		
+		/// Gets the percentage of the total duration that was not used on a task
+		double getEfficiency() const;
 	};
 }
 

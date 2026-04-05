@@ -428,9 +428,9 @@ void Scheduler::displayStats()
 	) << std::endl;
 
 	//       - Le nombre de "already locked" skips
-	//       - L'efficacité : temps utile / (makespan × nb équipes) × 100
-	//         Une efficacité de 100% signifie que toutes les équipes ont
-	//         travaillé sans interruption jusqu'à la fin. Une efficacité
-	//         basse signifie que certaines équipes finissent bien avant
-	//         les autres (déséquilibre de charge).
+
+	std::cout << std::format(
+		"Efficiency : {}% (useful_time / total_available_time)",
+		this->lastSchedule.getEfficiency()
+	) << std::endl;
 }

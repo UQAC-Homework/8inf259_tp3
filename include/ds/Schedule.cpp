@@ -2,7 +2,7 @@
 
 #include <ranges>
 
-bool ds::Schedule::isDeviceLocked(Device* device) const
+bool ds::Schedule::isDeviceLocked(const Device* device) const
 {
 	return this->lockedDevices.contains(device);
 }
@@ -28,6 +28,26 @@ std::size_t ds::Schedule::getLockedCount() const
 	return this->lockedDevices.size();
 }
 
+std::size_t ds::Schedule::getTotalDuration() const
+{
+	std::size_t highestTime = 0;
+
+	for (const auto& entries : this->_teamRecordEntries | std::views::values)
+	{
+		for (const auto [device, startTime] : entries)
+		{
+			const auto currentTime = startTime + device->getLockTime();
+
+			if (currentTime <= highestTime)
+				continue;
+
+			highestTime = currentTime;
+		}
+	}
+
+	return highestTime;
+}
+
 const ds::ScheduleEntry* ds::Schedule::getRecordEntry(const Team* team, const std::size_t time) const
 {
 	const auto teamIt = this->_teamRecordEntries.find(team);
@@ -48,22 +68,16 @@ const ds::ScheduleEntry* ds::Schedule::getRecordEntry(const Team* team, const st
 	return nullptr;
 }
 
-std::size_t ds::Schedule::getTotalDuration() const
+double ds::Schedule::getEfficiency() const
 {
-	std::size_t highestTime = 0;
+	const auto totalDuration = this->getTotalDuration() * this->_teamRecordEntries.size();
+	auto totalUsedTime = 0;
 
 	for (const auto& entries : this->_teamRecordEntries | std::views::values)
 	{
 		for (const auto [device, startTime] : entries)
-		{
-			const auto currentTime = startTime + device->getLockTime();
-
-			if (currentTime <= highestTime)
-				continue;
-
-			highestTime = currentTime;
-		}
+			totalUsedTime += device->getLockTime();
 	}
 
-	return highestTime;
+	return totalUsedTime / static_cast<double>(totalDuration) * 100.0;
 }
