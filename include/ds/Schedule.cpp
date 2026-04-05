@@ -3,14 +3,12 @@
 #include <format>
 #include <ranges>
 
-ds::Schedule::Schedule() = default;
-
 bool ds::Schedule::isDeviceLocked(const Device* device) const
 {
 	return this->_lockedDevices.contains(device);
 }
 
-void ds::Schedule::lockDevice(const Team* team, Device* device, Machine* machine, std::size_t time)
+void ds::Schedule::lockDevice(const Team* team, Device* device, const Machine* machine, std::size_t time)
 {
 	this->_lockedDevices.insert({device, machine});
 	this->_teamRecordEntries[team].emplace_back(device, time);
@@ -31,21 +29,50 @@ std::size_t ds::Schedule::getLockedCount() const
 	return this->_lockedDevices.size();
 }
 
+std::size_t ds::Schedule::getTeamLockCount(const Team* team) const
+{
+	const auto recordIt = this->_teamRecordEntries.find(team);
+
+	if (recordIt == this->_teamRecordEntries.end())
+		return 0;
+
+	return recordIt->second.size();
+}
+
 std::size_t ds::Schedule::getTotalDuration() const
 {
 	std::size_t highestTime = 0;
 
-	for (const auto& entries : this->_teamRecordEntries | std::views::values)
+	for (const auto team : this->_teamRecordEntries | std::views::keys)
 	{
-		for (const auto [device, startTime] : entries)
-		{
-			const auto currentTime = startTime + device->getLockTime();
+		const auto currentTime = this->getTeamTotalDuration(team);
 
-			if (currentTime <= highestTime)
-				continue;
+		if (currentTime <= highestTime)
+			continue;
 
-			highestTime = currentTime;
-		}
+		highestTime = currentTime;
+	}
+
+	return highestTime;
+}
+
+std::size_t ds::Schedule::getTeamTotalDuration(const Team* team) const
+{
+	const auto entriesIt = this->_teamRecordEntries.find(team);
+
+	if (entriesIt == this->_teamRecordEntries.end())
+		return 0;
+
+	std::size_t highestTime = 0;
+
+	for (const auto [device, startTime] : entriesIt->second)
+	{
+		const auto currentTime = startTime + device->getLockTime();
+
+		if (currentTime <= highestTime)
+			continue;
+
+		highestTime = currentTime;
 	}
 
 	return highestTime;
@@ -90,7 +117,7 @@ ds::Schedule ds::Schedule::createSchedule(const std::vector<const Machine*>& mac
 	Schedule schedule;
 	schedule._machines = machines;
 
-	std::unordered_map<Team*, std::unordered_map<Machine*, std::size_t>> devicesAssignedPerTeamPerMachine;
+	std::unordered_map<Team*, std::unordered_map<const Machine*, std::size_t>> devicesAssignedPerTeamPerMachine;
 	std::unordered_map<Team*, std::size_t> teamNextFreeAt;
 
 	for (const auto machine : machines)

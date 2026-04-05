@@ -358,14 +358,33 @@ void Scheduler::displayGantt()
 
 void Scheduler::displayStats()
 {
+	const auto maxTime = this->getMakespan();
+
 	std::cout << "=== STATISTICS ===" << std::endl;
 	std::cout << std::format(
 		"MAKESPAN : {} time units",
-		this->getMakespan()
+		maxTime
 	) << std::endl;
 
-	//       - Le nombre de devices et le temps total par équipe
-	//       - L'équipe "goulot d'étranglement" (celle qui finit en dernier)
+	for (const auto team : this->_teams)
+	{
+		const auto teamMaxTime = this->lastSchedule.getTeamTotalDuration(team);
+		std::string bottleneckMessage;
+
+		if (teamMaxTime == maxTime)
+			bottleneckMessage = "*** BOTTLENECK ***";
+
+		auto teamMessage = std::format(
+			"Team {} : {} devices, total_time={}, max_capacity={} {}",
+			team->getName(),
+			this->lastSchedule.getTeamLockCount(team),
+			teamMaxTime,
+			team->getMaxCapacity(),
+			bottleneckMessage
+		);
+		
+		std::cout << "\t" << teamMessage << std::endl;
+	}
 
 	std::cout << std::format(
 		"Devices locked : {} / {}",
