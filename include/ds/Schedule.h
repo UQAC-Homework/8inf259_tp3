@@ -18,9 +18,6 @@ namespace ds
 	struct Schedule
 	{
 	private:
-		/// List of ever machine to lock
-		std::vector<const Machine*> _machines;
-
 		/// List of every device locked by the following machine 
 		std::unordered_map<const Device*, const Machine*> _lockedDevices;
 
@@ -54,12 +51,6 @@ namespace ds
 
 		/// Gets the percentage of the total duration that was not used on a task
 		double getEfficiency() const;
-
-		/// Creates a schedule of tasks from the given information
-		static Schedule createSchedule(
-			const std::vector<const Machine*>& machines,
-			const std::vector<Team*>& teams
-		);
 	};
 }
 
