@@ -40,8 +40,13 @@
 class Team
 {
 private:
+	/// Name of this team
 	std::string name;
+
+	/// List of every type of devices that this team can handle
 	std::vector<std::string> capabilities;
+
+	/// Maximum amount of devices per machine this team can handle
 	int maxCapacity;
 
 public:
@@ -53,6 +58,7 @@ public:
 
 	[[nodiscard]] bool canHandle(const std::string& deviceType) const;
 
+	/// Loads every team in the given file
 	static std::vector<Team*> BuildTeamsFromJsonFile(const std::string& filename);
 };
 

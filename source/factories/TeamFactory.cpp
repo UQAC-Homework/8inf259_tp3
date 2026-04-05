@@ -6,12 +6,6 @@ Team TeamFactory::loadTeam(const nlohmann::basic_json<>& obj)
 	constexpr auto CAPABILITIES_KEY = "capabilities";
 	constexpr auto MAX_CAPACITY_KEY = "max_capacity";
 
-	if (!obj.contains(NAME_KEY))
-		throw std::invalid_argument("The property '" + std::string(NAME_KEY) + "' does not exist.");
-
-	if (!obj.contains(CAPABILITIES_KEY))
-		throw std::invalid_argument("The property '" + std::string(CAPABILITIES_KEY) + "' does not exist.");
-
 	const auto& capabilitiesProp = obj.at(CAPABILITIES_KEY);
 
 	if (!capabilitiesProp.is_array())
@@ -36,9 +30,6 @@ Team TeamFactory::loadTeam(const nlohmann::basic_json<>& obj)
 std::vector<Team*> TeamFactory::loadFromJson(const nlohmann::basic_json<>& obj)
 {
 	constexpr auto TEAMS_KEY = "teams";
-
-	if (!obj.contains(TEAMS_KEY))
-		throw std::invalid_argument("The property '" + std::string(TEAMS_KEY) + "' does not exist.");
 
 	const auto& teamsProp = obj.at(TEAMS_KEY);
 
