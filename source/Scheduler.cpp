@@ -301,7 +301,7 @@ void Scheduler::schedule()
 				// Skip if the team can't handle more devices from this machine
 				const auto maxCapacity = team->getMaxCapacity();
 
-				if (maxCapacity != -1)
+				if (maxCapacity != NO_LIMIT_CAPACITY)
 				{
 					const auto currentHandledDeviceCount = devicesAssignedPerTeamPerMachine[team][machine];
 

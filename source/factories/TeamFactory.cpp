@@ -13,7 +13,7 @@ Team TeamFactory::loadTeam(const nlohmann::basic_json<>& obj)
 
 	auto name = obj.at(NAME_KEY).get<std::string>();
 	std::vector<std::string> capabilities = {};
-	int maxCapacity = -1;
+	int maxCapacity = NO_LIMIT_CAPACITY;
 
 	for (const auto& capabilityItem : capabilitiesProp.items())
 	{

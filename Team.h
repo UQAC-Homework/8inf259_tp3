@@ -37,6 +37,8 @@
 #include <string>
 #include <vector>
 
+#define NO_LIMIT_CAPACITY -1
+
 class Team
 {
 private:
