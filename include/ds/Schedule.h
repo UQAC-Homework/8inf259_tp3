@@ -21,7 +21,8 @@ namespace ds
 		/// List of every device locked by the following machine 
 		std::unordered_map<const Device*, const Machine*> lockedDevices;
 
-		std::unordered_map<const Team*, std::vector<ScheduleEntry>> gantt;
+		/// List of every entry for each team
+		std::unordered_map<const Team*, std::vector<ScheduleEntry>> _teamRecordEntries;
 
 	public:
 		/// Checks if the given device is locked

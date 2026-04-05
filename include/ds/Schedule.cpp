@@ -10,7 +10,7 @@ bool ds::Schedule::isDeviceLocked(Device* device) const
 void ds::Schedule::lockDevice(const Team* team, Device* device, Machine* machine, std::size_t time)
 {
 	this->lockedDevices.insert({device, machine});
-	this->gantt[team].emplace_back(device, time);
+	this->_teamRecordEntries[team].emplace_back(device, time);
 }
 
 const Machine* ds::Schedule::getLockResponsible(const Device* device) const
@@ -30,9 +30,9 @@ std::size_t ds::Schedule::getLockedCount() const
 
 const ds::ScheduleEntry* ds::Schedule::getRecordEntry(const Team* team, const std::size_t time) const
 {
-	const auto teamIt = this->gantt.find(team);
+	const auto teamIt = this->_teamRecordEntries.find(team);
 
-	if (teamIt == this->gantt.end())
+	if (teamIt == this->_teamRecordEntries.end())
 		return nullptr;
 
 	for (const auto& entry : teamIt->second)
@@ -52,7 +52,7 @@ std::size_t ds::Schedule::getTotalDuration() const
 {
 	std::size_t highestTime = 0;
 
-	for (const auto& entries : this->gantt | std::views::values)
+	for (const auto& entries : this->_teamRecordEntries | std::views::values)
 	{
 		for (const auto [device, startTime] : entries)
 		{
