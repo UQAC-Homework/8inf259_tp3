@@ -18,6 +18,7 @@ namespace ds
 	struct Schedule
 	{
 	private:
+		/// List of ever machine to lock
 		std::vector<const Machine*> _machines;
 
 		/// List of every device locked by the following machine 
@@ -46,12 +47,15 @@ namespace ds
 
 		/// Gets the record entry from the given team recorded within the given time
 		const ScheduleEntry* getRecordEntry(const Team* team, std::size_t time) const;
-		
+
 		/// Gets the percentage of the total duration that was not used on a task
 		double getEfficiency() const;
-		
+
 		/// Creates a schedule of tasks from the given information
-		static Schedule createSchedule(const std::vector<const Machine*>& machines, const std::vector<Team*>& teams);
+		static Schedule createSchedule(
+			const std::vector<const Machine*>& machines,
+			const std::vector<Team*>& teams
+		);
 	};
 }
 
