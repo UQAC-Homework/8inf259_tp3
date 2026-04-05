@@ -139,68 +139,58 @@ bool Scheduler::hasCycle() const
 std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machine*, const Machine*)>& tieBreaker)
 {
 	std::unordered_map<Machine*, std::size_t> machinesInDegree;
-
-	for (auto machine : this->_machines | std::views::values)
-		machinesInDegree[machine] = machine->getDependsOn().size();
-
 	std::priority_queue<
 		Machine*,
 		std::vector<Machine*>,
 		decltype(tieBreaker)
 	> machinesToProcess(tieBreaker);
 
-	for (auto it = machinesInDegree.cbegin(); it != machinesInDegree.cend();)
+	for (const auto machine : this->_machines | std::views::values)
 	{
-		if (it->second > 0)
+		const auto dependencyCount = machine->getDependsOn().size();
+
+		if (dependencyCount > 0)
 		{
-			++it;
+			machinesInDegree[machine] = dependencyCount;
 			continue;
 		}
 
-		machinesToProcess.push(it->first);
-		it = machinesInDegree.erase(it);
+		machinesToProcess.push(machine);
 	}
 
-	std::vector<Machine*> machineOrder;
+	std::vector<int> machineOrder;
 
 	while (!machinesToProcess.empty())
 	{
 		auto current = machinesToProcess.top();
 		machinesToProcess.pop();
 
-		machineOrder.push_back(current);
+		machineOrder.push_back(current->getId());
 
 		auto it = this->_dependencyGraph.find(current);
 
 		if (it == this->_dependencyGraph.cend())
 			continue;
 
-		for (Machine* dependent : it->second)
+		for (auto dependent : it->second)
 		{
-			auto& deg = machinesInDegree[dependent];
-			deg--;
+			const auto inDegreeIt = machinesInDegree.find(dependent);
 
-			if (deg > 0)
+			if (inDegreeIt == machinesInDegree.cend())
+				continue;
+
+			inDegreeIt->second--;
+
+			if (inDegreeIt->second > 0)
 				continue;
 
 			machinesToProcess.push(dependent);
 		}
 	}
 
-	std::vector<int> result(machineOrder.size());
-
-	std::transform(
-		machineOrder.begin(),
-		machineOrder.end(),
-		result.begin(),
-		[](const Machine* machine)
-		{
-			return machine->getId();
-		}
-	);
-
-	// std::priority_queue<Machine*, std::vector<Machine*>, decltype(tieBreaker)>
-	return result;
+	// TODO: Check if the order is not reversed
+	// The dependent should be locked before the dependency
+	return machineOrder;
 }
 
 void Scheduler::schedule()
