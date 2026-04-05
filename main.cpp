@@ -5,7 +5,7 @@
 #include "Team.h"
 
 // Changer le ASSETS_TYPE pour : small, big, errors ou balanced (en fonction de vos tests)
-#define ASSETS_TYPE big
+#define ASSETS_TYPE custom
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x)  STRINGIFY(x)

@@ -8,7 +8,7 @@
     {
       "id": 2,
       "name": "B",
-      "related_devices": [1, 2],
+      "related_devices": [1, 2, 6],
       "depends_on": [1]
     }
   ]

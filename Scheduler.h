@@ -134,13 +134,7 @@
 #include "Device.h"
 #include "Machine.h"
 #include "Team.h"
-
-struct ScheduleEntry
-{
-public:
-	Device* device;
-	std::size_t startTime;
-};
+#include "include/ds/Schedule.h"
 
 class Scheduler
 {
@@ -162,10 +156,7 @@ private:
 	/// Graph from dependency to dependents
 	std::unordered_map<Machine*, std::unordered_set<Machine*>> _dependencyGraph;
 
-	/// List of every device locked by the following machine 
-	std::unordered_map<Device*, Machine*> lockedDevices;
-
-	std::unordered_map<Team*, std::vector<ScheduleEntry>> gantt;
+	ds::Schedule lastSchedule;
 
 	static bool defaultTieBreaker(const Machine* a, const Machine* b);
 
@@ -192,7 +183,7 @@ public:
 
 	/// Checks if the built dependency graph has a dependency cycle
 	[[nodiscard]] bool hasCycle() const;
-	
+
 	/// Finds the order in which the machines have to be locked in
 	std::vector<int> topologicalSort(
 		const std::function<bool(const Machine*, const Machine*)>& tieBreaker

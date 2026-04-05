@@ -6,6 +6,7 @@
 #include <ranges>
 #include <unordered_set>
 
+#include "../include/ds/Schedule.h"
 #include "../include/library/string.h"
 
 bool Scheduler::defaultTieBreaker(const Machine* a, const Machine* b)
@@ -59,14 +60,14 @@ void Scheduler::displayLockoutSummary(std::ostream& output, const std::vector<in
 
 		for (auto device : machine->getRelatedDevices())
 		{
-			auto lockedDeviceIt = this->lockedDevices.find(device);
+			const auto responsible = this->lastSchedule.getLockResponsible(device);
 
-			if (lockedDeviceIt == this->lockedDevices.end())
+			if (responsible == nullptr)
 				continue;
 
 			locked++;
 
-			if (lockedDeviceIt->second == machine)
+			if (responsible == machine)
 				continue;
 
 			skipped.push_back(device);
@@ -282,6 +283,7 @@ std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machi
 
 void Scheduler::schedule()
 {
+	ds::Schedule schedule;
 	std::unordered_map<Team*, std::unordered_map<Machine*, std::size_t>> devicesAssignedPerTeamPerMachine;
 	std::unordered_map<Team*, std::size_t> teamNextFreeAt;
 
@@ -293,8 +295,7 @@ void Scheduler::schedule()
 
 		for (const auto device : machine->getRelatedDevices())
 		{
-			// This device has already been locked
-			if (this->lockedDevices.contains(device))
+			if (schedule.isDeviceLocked(device))
 				continue;
 
 			const auto deviceType = device->getType();
@@ -341,30 +342,17 @@ void Scheduler::schedule()
 			const auto startTime = teamNextFreeAt[bestTeam];
 			teamNextFreeAt[bestTeam] = startTime + device->getLockTime();
 			devicesAssignedPerTeamPerMachine[bestTeam][machine]++;
-			this->lockedDevices.insert({device, machine});
-			this->gantt[bestTeam].emplace_back(device, startTime);
+
+			schedule.lockDevice(bestTeam, device, machine, startTime);
 		}
 	}
+
+	this->lastSchedule = schedule;
 }
 
 int Scheduler::getMakespan() const
 {
-	int highestTime = 0;
-
-	for (const auto& entries : this->gantt | std::views::values)
-	{
-		for (const auto [device, startTime] : entries)
-		{
-			const auto currentTime = startTime + device->getLockTime();
-
-			if (currentTime <= highestTime)
-				continue;
-
-			highestTime = static_cast<int>(currentTime);
-		}
-	}
-
-	return highestTime;
+	return static_cast<int>(this->lastSchedule.getTotalDuration());
 }
 
 void Scheduler::displaySummary()
@@ -391,20 +379,9 @@ void Scheduler::displayGantt()
 	{
 		std::cout << std::to_string(i) << " | ";
 
-		for (auto team : this->_teams)
+		for (const auto team : this->_teams)
 		{
-			const ScheduleEntry* currentEntry = nullptr;
-
-			for (const auto& entry : this->gantt[team])
-			{
-				const auto endTime = entry.startTime + entry.device->getLockTime();
-
-				if (i < entry.startTime || i >= endTime)
-					continue;
-
-				currentEntry = &entry;
-				break;
-			}
+			const auto currentEntry = this->lastSchedule.getRecordEntry(team, i);
 
 			if (currentEntry != nullptr)
 			{
@@ -446,7 +423,7 @@ void Scheduler::displayStats()
 
 	std::cout << std::format(
 		"Devices locked : {} / {}",
-		this->lockedDevices.size(),
+		this->lastSchedule.getLockedCount(),
 		this->_devices.size()
 	) << std::endl;
 
