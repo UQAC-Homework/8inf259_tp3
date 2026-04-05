@@ -459,7 +459,7 @@ void Scheduler::displayStats()
 		totalUsedTime += this->lastSchedule.getTeamTotalDuration(team);
 
 	std::cout << std::format(
-		"Efficiency : {}% (useful_time / total_available_time)",
+		"Efficiency : {:.1f}% (useful_time / total_available_time)",
 		static_cast<double>(totalUsedTime) / static_cast<double>(maxTime * this->_teams.size()) * 100.0
 	) << std::endl;
 }
