@@ -24,6 +24,8 @@ namespace ds
 		/// List of every entry for each team
 		std::unordered_map<const Team*, std::vector<ScheduleEntry>> _teamRecordEntries;
 
+		Schedule();
+
 	public:
 		/// Checks if the given device is locked
 		[[nodiscard]] bool isDeviceLocked(const Device* device) const;
@@ -45,6 +47,9 @@ namespace ds
 		
 		/// Gets the percentage of the total duration that was not used on a task
 		double getEfficiency() const;
+		
+		/// Creates a schedule of tasks from the given information
+		static Schedule createSchedule(const std::vector<Machine*>& machines, const std::vector<Team*>& teams);
 	};
 }
 

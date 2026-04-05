@@ -283,71 +283,17 @@ std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machi
 
 void Scheduler::schedule()
 {
-	ds::Schedule schedule;
-	std::unordered_map<Team*, std::unordered_map<Machine*, std::size_t>> devicesAssignedPerTeamPerMachine;
-	std::unordered_map<Team*, std::size_t> teamNextFreeAt;
-
 	const auto machinesId = this->topologicalSort(defaultTieBreaker);
+	std::vector<Machine*> machines;
+	machines.reserve(machinesId.size());
 
 	for (const auto machineId : machinesId)
 	{
 		const auto machine = this->_machines.at(machineId);
-
-		for (const auto device : machine->getRelatedDevices())
-		{
-			if (schedule.isDeviceLocked(device))
-				continue;
-
-			const auto deviceType = device->getType();
-			Team* bestTeam = nullptr;
-			std::size_t bestTeamLoad = __SIZE_MAX__;
-
-			for (const auto team : this->_teams)
-			{
-				// Skip if the team can't handle the device type
-				if (!team->canHandle(deviceType))
-					continue;
-
-				// Skip if the team can't handle more devices from this machine
-				const auto maxCapacity = team->getMaxCapacity();
-
-				if (maxCapacity != -1)
-				{
-					const auto currentHandledDeviceCount = devicesAssignedPerTeamPerMachine[team][machine];
-
-					if (currentHandledDeviceCount >= maxCapacity)
-						continue;
-				}
-
-				// If the team is the least occupied
-				const auto teamLoad = teamNextFreeAt[team];
-
-				if (teamLoad >= bestTeamLoad)
-					continue;
-
-				bestTeamLoad = teamLoad;
-				bestTeam = team;
-			}
-
-			if (bestTeam == nullptr)
-			{
-				const auto message = std::format(
-					"No team is fitted to handle the device '{}'.",
-					device->getId()
-				);
-
-				throw std::logic_error(message);
-			}
-
-			const auto startTime = teamNextFreeAt[bestTeam];
-			teamNextFreeAt[bestTeam] = startTime + device->getLockTime();
-			devicesAssignedPerTeamPerMachine[bestTeam][machine]++;
-
-			schedule.lockDevice(bestTeam, device, machine, startTime);
-		}
+		machines.push_back(machine);
 	}
 
-	this->lastSchedule = schedule;
+	this->lastSchedule = ds::Schedule::createSchedule(machines, this->_teams);
 }
 
 int Scheduler::getMakespan() const
