@@ -78,12 +78,7 @@ void Scheduler::buildDependencyGraph()
 
 	for (const auto machine : this->_machines | std::views::values)
 	{
-		const auto dependenciesId = machine->getDependsOn();
-
-		if (dependenciesId.empty())
-			continue;
-
-		for (const auto dependencyId : dependenciesId)
+		for (const auto dependencyId : machine->getDependsOn())
 		{
 			const auto dependency = this->_machines.at(dependencyId);
 
