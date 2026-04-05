@@ -91,22 +91,19 @@ bool Scheduler::hasCycle() const
 {
 	// Algorithm from: https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 	std::unordered_map<Machine*, std::size_t> machinesInDegree;
-
-	for (auto machine : this->_machines | std::views::values)
-		machinesInDegree[machine] = machine->getDependsOn().size();
-
 	std::queue<Machine*> machineToExplore;
 
-	for (auto it = machinesInDegree.cbegin(); it != machinesInDegree.cend();)
+	for (const auto machine : this->_machines | std::views::values)
 	{
-		if (it->second > 0)
+		const auto dependencyCount = machine->getDependsOn().size();
+
+		if (dependencyCount > 0)
 		{
-			++it;
+			machinesInDegree[machine] = dependencyCount;
 			continue;
 		}
 
-		machineToExplore.push(it->first);
-		it = machinesInDegree.erase(it);
+		machineToExplore.push(machine);
 	}
 
 	while (!machineToExplore.empty())
@@ -128,11 +125,11 @@ bool Scheduler::hasCycle() const
 
 			inDegreeIt->second--;
 
-			if (inDegreeIt->second == 0)
-			{
-				machinesInDegree.erase(inDegreeIt);
-				machineToExplore.push(dependency);
-			}
+			if (inDegreeIt->second > 0)
+				continue;
+
+			machinesInDegree.erase(inDegreeIt);
+			machineToExplore.push(dependency);
 		}
 	}
 
