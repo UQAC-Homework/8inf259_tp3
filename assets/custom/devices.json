@@ -3,12 +3,14 @@
     {
       "id": 1,
       "type": "VALVE",
-      "name": "Inlet Valve"
+      "name": "Inlet Valve",
+      "lock_time": 4
     },
     {
       "id": 2,
       "type": "BREAKER",
-      "name": "High Pressure Breaker"
+      "name": "High Pressure Breaker",
+      "lock_time": 3
     },
     {
       "id": 3,

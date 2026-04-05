@@ -2,11 +2,11 @@
   "teams":[
     {
       "name": "Alpha",
-      "capabilities": ["BREAKER", "CIRCUIT_BREAKER", "DISCONNECT_SWITCH", "TAG", "PADLOCK", "FUSE"]
+      "capabilities": ["BREAKER", "CIRCUIT_BREAKER", "DISCONNECT_SWITCH", "VALVE"]
     },
     {
       "name": "Beta",
-      "capabilities": ["VALVE", "PRESSURE_GAUGE", "FLOW_METER", "EMERGENCY_STOP", "CONTROL_SWITCH", "SAFETY_RELAY", "SAFETY_LOCK"]
+      "capabilities": ["BREAKER", "CIRCUIT_BREAKER", "DISCONNECT_SWITCH", "VALVE"]
     }
   ]
 }

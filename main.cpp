@@ -5,7 +5,7 @@
 #include "Team.h"
 
 // Changer le ASSETS_TYPE pour : small, big, errors ou balanced (en fonction de vos tests)
-#define ASSETS_TYPE small
+#define ASSETS_TYPE big
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x)  STRINGIFY(x)
@@ -43,7 +43,6 @@ int main()
 	{
 		return m1->getId() < m2->getId();
 	});
-	return 0;
 
 	// --- Scheduling glouton ---
 	scheduler.schedule();

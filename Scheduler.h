@@ -135,6 +135,13 @@
 #include "Machine.h"
 #include "Team.h"
 
+struct ScheduleEntry
+{
+public:
+	Device* device;
+	std::size_t startTime;
+};
+
 class Scheduler
 {
 private:
@@ -144,10 +151,7 @@ private:
 	//  Quelles méthodes utilitaires privées ?
 	//
 	//  Pensez à ce dont chaque méthode publique a besoin :
-	//    - Stocker les données d'entrée (devices, machines, teams)
-	//    - Représenter le graphe de dépendances
-	//    - Suivre l'état du scheduling (qui est verrouillé, charge
-	//      de chaque équipe, résultats par machine...)
+	//    - Suivre l'état du scheduling (charge de chaque équipe, résultats par machine...)
 	//    - Stocker le makespan
 	// ════════════════════════════════════════════════════════════
 
@@ -158,18 +162,38 @@ private:
 	/// Graph from dependency to dependents
 	std::unordered_map<Machine*, std::unordered_set<Machine*>> _dependencyGraph;
 
+	/// List of every device locked by the following machine 
+	std::unordered_map<Device*, Machine*> lockedDevices;
+
+	std::unordered_map<Team*, std::vector<ScheduleEntry>> gantt;
+
+	static bool defaultTieBreaker(const Machine* a, const Machine* b);
+
+	// Prints
+	/// Displays the given topological order of machines
+	void displayTopologicalOrder(std::ostream& output, const std::vector<int>& order) const;
+	void displayLockoutSummary(std::ostream& output, const std::vector<int>& order) const;
+
 public:
 	Scheduler(const std::unordered_map<int, Device*>& devices,
 	          const std::unordered_map<int, Machine*>& machines,
 	          const std::vector<Team*>& teams);
 
 	// Analyse des données
+	/// Displays every device that is not connected to a machine
 	void displayNotConnectedDevices();
+
+	/// Displays every team with their information
 	void displayTeams();
 
 	// Graphe + tri topologique
+	/// Builds a dependency graph of the loaded machines
 	void buildDependencyGraph();
+
+	/// Checks if the built dependency graph has a dependency cycle
 	[[nodiscard]] bool hasCycle() const;
+	
+	/// Finds the order in which the machines have to be locked in
 	std::vector<int> topologicalSort(
 		const std::function<bool(const Machine*, const Machine*)>& tieBreaker
 	);

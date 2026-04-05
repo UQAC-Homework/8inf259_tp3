@@ -21,4 +21,6 @@ add_executable(8inf259_tp3 main.cpp
         include/factories/TeamFactory.h
         source/Team.cpp
         source/Scheduler.cpp
-        include/library/string.h)
+        include/library/string.h
+        source/ds/DependencyGraph.cpp
+        include/ds/DependencyGraph.h)
