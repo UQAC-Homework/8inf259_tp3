@@ -50,17 +50,11 @@ namespace ds
 		/// Gets the amount of locks from the given team
 		[[nodiscard]] std::size_t getTeamLockCount(const Team* team) const;
 
-		/// Gets the total duration of this schedule
-		[[nodiscard]] std::size_t getTotalDuration() const;
-
 		/// Gets the total duration of the given from
 		[[nodiscard]] std::size_t getTeamTotalDuration(const Team* team) const;
 
 		/// Gets the record entry from the given team recorded within the given time
 		const ScheduleEntry* getRecordEntry(const Team* team, std::size_t time) const;
-
-		/// Gets the percentage of the total duration that was not used on a task
-		double getEfficiency() const;
 	};
 }
 

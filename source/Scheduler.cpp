@@ -342,7 +342,19 @@ void Scheduler::schedule()
 
 int Scheduler::getMakespan() const
 {
-	return static_cast<int>(this->lastSchedule.getTotalDuration());
+	std::size_t highestTime = 0;
+
+	for (const auto team : this->_teams)
+	{
+		const auto currentTime = this->lastSchedule.getTeamTotalDuration(team);
+
+		if (currentTime <= highestTime)
+			continue;
+
+		highestTime = currentTime;
+	}
+
+	return static_cast<int>(highestTime);
 }
 
 void Scheduler::displaySummary()
@@ -441,8 +453,13 @@ void Scheduler::displayStats()
 		this->lastSchedule.getSkippedCount()
 	) << std::endl;
 
+	std::size_t totalUsedTime = 0;
+
+	for (const auto team : this->_teams)
+		totalUsedTime += this->lastSchedule.getTeamTotalDuration(team);
+
 	std::cout << std::format(
 		"Efficiency : {}% (useful_time / total_available_time)",
-		this->lastSchedule.getEfficiency()
+		static_cast<double>(totalUsedTime) / static_cast<double>(maxTime * this->_teams.size()) * 100.0
 	) << std::endl;
 }

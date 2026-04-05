@@ -54,23 +54,6 @@ std::size_t ds::Schedule::getTeamLockCount(const Team* team) const
 	return recordIt->second.size();
 }
 
-std::size_t ds::Schedule::getTotalDuration() const
-{
-	std::size_t highestTime = 0;
-
-	for (const auto team : this->_teamRecordEntries | std::views::keys)
-	{
-		const auto currentTime = this->getTeamTotalDuration(team);
-
-		if (currentTime <= highestTime)
-			continue;
-
-		highestTime = currentTime;
-	}
-
-	return highestTime;
-}
-
 std::size_t ds::Schedule::getTeamTotalDuration(const Team* team) const
 {
 	const auto entriesIt = this->_teamRecordEntries.find(team);
@@ -111,18 +94,4 @@ const ds::ScheduleEntry* ds::Schedule::getRecordEntry(const Team* team, const st
 	}
 
 	return nullptr;
-}
-
-double ds::Schedule::getEfficiency() const
-{
-	const auto totalDuration = this->getTotalDuration() * this->_teamRecordEntries.size();
-	double totalUsedTime = 0;
-
-	for (const auto& entries : this->_teamRecordEntries | std::views::values)
-	{
-		for (const auto [device, startTime] : entries)
-			totalUsedTime += device->getLockTime();
-	}
-
-	return totalUsedTime / static_cast<double>(totalDuration) * 100.0;
 }
