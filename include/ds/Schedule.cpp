@@ -116,7 +116,7 @@ const ds::ScheduleEntry* ds::Schedule::getRecordEntry(const Team* team, const st
 double ds::Schedule::getEfficiency() const
 {
 	const auto totalDuration = this->getTotalDuration() * this->_teamRecordEntries.size();
-	auto totalUsedTime = 0;
+	double totalUsedTime = 0;
 
 	for (const auto& entries : this->_teamRecordEntries | std::views::values)
 	{
