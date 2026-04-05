@@ -276,8 +276,6 @@ std::vector<int> Scheduler::topologicalSort(const std::function<bool(const Machi
 		}
 	}
 
-	// TODO: Check if the order is not reversed
-	// The dependent should be locked before the dependency
 	return machineOrder;
 }
 
