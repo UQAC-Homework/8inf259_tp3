@@ -19,16 +19,6 @@ void ds::Schedule::recordSkippedDevice(const Machine* machine, const Device* dev
 	this->_skippedDevices[machine].emplace_back(device);
 }
 
-const Machine* ds::Schedule::getLockResponsible(const Device* device) const
-{
-	const auto lockedDeviceIt = this->_lockedDevices.find(device);
-
-	if (lockedDeviceIt == this->_lockedDevices.end())
-		return nullptr;
-
-	return lockedDeviceIt->second;
-}
-
 std::size_t ds::Schedule::getLockedCount() const
 {
 	return this->_lockedDevices.size();
@@ -42,6 +32,16 @@ std::size_t ds::Schedule::getSkippedCount() const
 		count += devices.size();
 
 	return count;
+}
+
+std::vector<const Device*> ds::Schedule::getSkippedDevices(const Machine* machine) const
+{
+	const auto skippedIt = this->_skippedDevices.find(machine);
+
+	if (skippedIt == this->_skippedDevices.end())
+		return {};
+
+	return skippedIt->second;
 }
 
 std::size_t ds::Schedule::getTeamLockCount(const Team* team) const

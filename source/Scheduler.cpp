@@ -55,29 +55,13 @@ void Scheduler::displayLockoutSummary(std::ostream& output, const std::vector<in
 	for (auto machineId : order)
 	{
 		const auto machine = this->_machines.at(machineId);
-		std::vector<Device*> skipped;
-		std::size_t locked = 0;
-
-		for (auto device : machine->getRelatedDevices())
-		{
-			const auto responsible = this->lastSchedule.getLockResponsible(device);
-
-			if (responsible == nullptr)
-				continue;
-
-			locked++;
-
-			if (responsible == machine)
-				continue;
-
-			skipped.push_back(device);
-		}
+		std::vector<const Device*> skipped = this->lastSchedule.getSkippedDevices(machine);
 
 		auto machineMessage = std::format(
 			"Machine {} : {} -- {} locked, {} skipped",
 			machine->getId(),
 			machine->getName(),
-			locked,
+			machine->getRelatedDevices().size() - skipped.size(),
 			skipped.size()
 		);
 
