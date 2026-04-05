@@ -149,12 +149,12 @@ private:
 	//    - Stocker le makespan
 	// ════════════════════════════════════════════════════════════
 
-	std::unordered_map<int, Device*> _devices;
+	std::vector<Device*> _devices;
 	std::unordered_map<int, Machine*> _machines;
 	std::vector<Team*> _teams;
 
 	/// Graph from dependency to dependents
-	std::unordered_map<Machine*, std::unordered_set<Machine*>> _dependencyGraph;
+	std::unordered_map<Machine*, std::vector<Machine*>> _dependencyGraph;
 
 	ds::Schedule lastSchedule;
 

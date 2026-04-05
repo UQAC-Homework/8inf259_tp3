@@ -86,10 +86,15 @@ Scheduler::Scheduler(
 	const std::vector<Team*>& teams
 )
 {
-	this->_devices = devices;
+	this->_devices = {};
 	this->_machines = machines;
 	this->_teams = teams;
 	this->_dependencyGraph = {};
+
+	this->_devices.reserve(devices.size());
+
+	for (const auto device : devices | std::views::values)
+		this->_devices.push_back(device);
 }
 
 void Scheduler::displayNotConnectedDevices()
@@ -104,7 +109,7 @@ void Scheduler::displayNotConnectedDevices()
 
 	std::cout << "=== DEVICES NOT CONNECTED TO ANY MACHINE ===" << std::endl;
 
-	for (const auto device : this->_devices | std::views::values)
+	for (const auto device : this->_devices)
 	{
 		if (connectedDevices.contains(device))
 			continue;
@@ -154,7 +159,7 @@ void Scheduler::buildDependencyGraph()
 		{
 			const auto dependency = this->_machines.at(dependencyId);
 
-			this->_dependencyGraph[dependency].insert(machine);
+			this->_dependencyGraph[dependency].push_back(machine);
 		}
 	}
 }
@@ -328,7 +333,7 @@ void Scheduler::schedule()
 			teamNextFreeAt[bestTeam] = startTime + device->getLockTime();
 			devicesAssignedPerTeamPerMachine[bestTeam][machine]++;
 
-			schedule.lockDevice(bestTeam, device, machine, startTime);
+			schedule.lockDevice(bestTeam, device, startTime);
 		}
 	}
 
