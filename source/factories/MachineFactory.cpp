@@ -10,12 +10,6 @@ Machine MachineFactory::loadMachine(
 	constexpr auto RELATIVE_DEVICES_KEY = "related_devices";
 	constexpr auto MACHINE_DEPENDENCIES_KEY = "depends_on";
 
-	if (!obj.contains(ID_KEY))
-		throw std::invalid_argument("The property '" + std::string(ID_KEY) + "' does not exist.");
-
-	if (!obj.contains(NAME_KEY))
-		throw std::invalid_argument("The property '" + std::string(NAME_KEY) + "' does not exist.");
-
 	auto id = obj.at(ID_KEY).get<int>();
 	auto name = obj.at(NAME_KEY).get<std::string>();
 	std::vector<Device*> relativeDevices = {};
@@ -65,9 +59,6 @@ std::unordered_map<int, Machine*> MachineFactory::loadFromJson(
 )
 {
 	constexpr auto MACHINES_KEY = "machines";
-
-	if (!obj.contains(MACHINES_KEY))
-		throw std::invalid_argument("The property '" + std::string(MACHINES_KEY) + "' does not exist.");
 
 	const auto& machinesProps = obj.at(MACHINES_KEY);
 

@@ -49,23 +49,37 @@
 class Machine
 {
 private:
+	/// Unique identifier of this machine
 	int id;
+
+	/// Name of this machine
 	std::string name;
+
+	/// List of every device to lock in order to lock this machine
 	std::vector<Device*> relatedDevices;
+
+	/// List of every machine needed by this machine
 	std::vector<int> dependsOn;
 
 public:
 	Machine(int id, const std::string& name);
-	Machine(int id, const std::string& name, const std::vector<Device*>& relatedDevices, const std::vector<int>& dependsOn);
+	Machine(
+		int id,
+		const std::string& name,
+		const std::vector<Device*>& relatedDevices,
+		const std::vector<int>& dependsOn
+	);
 
 	[[nodiscard]] int getId() const { return id; }
 	[[nodiscard]] std::string getName() const { return name; }
 	[[nodiscard]] std::vector<Device*> getRelatedDevices() const { return relatedDevices; }
 	[[nodiscard]] std::vector<int> getDependsOn() const { return dependsOn; }
 
+	/// Loads every machine in the given file, and returns them by their identifier
 	static std::unordered_map<int, Machine*> BuildMachinesFromJsonFile(
 		const std::string& path,
-		const std::unordered_map<int, Device*>& devices);
+		const std::unordered_map<int, Device*>& devices
+	);
 };
 
 #endif // MACHINE_H
