@@ -20,7 +20,7 @@ std::unordered_map<int, Device*> Device::BuildDevicesFromJsonFile(const std::str
 		throw std::runtime_error("File at '" + path + "' does not exist.");
 
 	std::ifstream file(path);
-	std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+	std::string content((std::istreambuf_iterator(file)), std::istreambuf_iterator<char>());
 
 	auto json = nlohmann::json::parse(content);
 
