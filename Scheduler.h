@@ -190,12 +190,20 @@ public:
 	);
 
 	// Scheduling
+	/// Creates a schedule with the loaded information
 	void schedule();
+
+	/// Finds total duration of the last schedule
 	[[nodiscard]] int getMakespan() const;
 
 	// Affichage
+	/// Displays the summary of the last schedule
 	void displaySummary();
+	
+	/// Displays the timeline of the last schedule
 	void displayGantt();
+	
+	/// Displays statistics about the last schedule
 	void displayStats();
 };
 

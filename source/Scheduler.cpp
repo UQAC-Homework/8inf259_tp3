@@ -366,6 +366,7 @@ void Scheduler::displaySummary()
 	this->displayLockoutSummary(std::cout, order);
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void Scheduler::displayGantt()
 {
 	std::cout << "T | ";
@@ -412,6 +413,7 @@ void Scheduler::displayGantt()
 	}
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void Scheduler::displayStats()
 {
 	const auto maxTime = this->getMakespan();
