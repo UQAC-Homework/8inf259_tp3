@@ -369,18 +369,23 @@ void Scheduler::displaySummary()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void Scheduler::displayGantt()
 {
-	std::cout << "T | ";
+	const auto maxTime = this->getMakespan();
+	const auto teamCount = this->_teams.size();
+
+	const auto columnCount = teamCount + 1;
+	const auto rowCount = maxTime + 1;
+
+	std::vector<std::string> cells;
+	cells.reserve(rowCount * columnCount);
+
+	cells.emplace_back("T");
 
 	for (const auto team : this->_teams)
-		std::cout << team->getName() << " | ";
-
-	std::cout << std::endl;
-
-	const auto maxTime = this->getMakespan();
+		cells.emplace_back(team->getName());
 
 	for (int i = 0; i < maxTime; ++i)
 	{
-		std::cout << std::to_string(i) << " | ";
+		cells.emplace_back(std::to_string(i));
 
 		for (const auto team : this->_teams)
 		{
@@ -398,18 +403,50 @@ void Scheduler::displayGantt()
 						currentDevice->getId()
 					);
 
-					std::cout << startEntryMessage;
+					cells.emplace_back(startEntryMessage);
 				}
 				else
-					std::cout << "\"";
+					cells.emplace_back("\"");
 			}
 			else
-				std::cout << " ";
+				cells.emplace_back(" ");
+		}
+	}
 
-			std::cout << " | ";
+	std::vector<std::size_t> maxWidth;
+	maxWidth.reserve(columnCount);
+
+	for (int i = 0; i < columnCount; ++i)
+	{
+		std::size_t biggestWidth = 0;
+
+		for (int j = 0; j < rowCount; ++j)
+		{
+			const auto width = cells.at(j * columnCount + i).length();
+
+			if (width <= biggestWidth)
+				continue;
+
+			biggestWidth = width;
 		}
 
-		std::cout << std::endl;
+		maxWidth.emplace_back(biggestWidth);
+	}
+
+	for (int i = 0; i < cells.size(); ++i)
+	{
+		const auto& cell = cells.at(i);
+		const auto totalWidth = maxWidth.at(i % columnCount);
+
+		std::cout << cell;
+		
+		if (totalWidth != cell.length())
+			std::cout << std::string(totalWidth - cell.length(), ' ');
+		
+		std::cout << " | ";
+	
+		if (i % columnCount == columnCount - 1)
+			std::cout << std::endl;
 	}
 }
 
