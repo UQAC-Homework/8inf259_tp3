@@ -2,20 +2,10 @@
 
 Device DeviceFactory::loadDevice(const nlohmann::basic_json<>& obj)
 {
-	constexpr auto ID_KEY = "id";
-	constexpr auto TYPE_KEY = "type";
-	constexpr auto NAME_KEY = "name";
-	constexpr auto LOCK_TIME_KEY = "lock_time";
-
-	auto id = obj.at(ID_KEY).get<int>();
-	auto type = obj.at(TYPE_KEY).get<std::string>();
-	auto name = obj.at(NAME_KEY).get<std::string>();
-	int lockTime;
-
-	if (obj.contains(LOCK_TIME_KEY))
-		lockTime = obj.at(LOCK_TIME_KEY).get<int>();
-	else
-		lockTime = 1;
+	auto id = obj.at("id").get<int>();
+	auto type = obj.at("type").get<std::string>();
+	auto name = obj.at("name").get<std::string>();
+	auto lockTime = obj.value<int>("lock_time", 1);
 
 	return {id, type, name, lockTime};
 }
