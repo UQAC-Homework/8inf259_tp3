@@ -391,25 +391,27 @@ void Scheduler::displayGantt()
 		{
 			const auto currentEntry = this->lastSchedule.getRecordEntry(team, i);
 
-			if (currentEntry != nullptr)
+			if (currentEntry == nullptr)
 			{
-				const auto currentDevice = currentEntry->device;
-
-				if (i == currentEntry->startTime)
-				{
-					auto startEntryMessage = std::format(
-						"{} ({})",
-						currentDevice->getName(),
-						currentDevice->getId()
-					);
-
-					cells.emplace_back(startEntryMessage);
-				}
-				else
-					cells.emplace_back("\"");
-			}
-			else
 				cells.emplace_back(" ");
+				continue;
+			}
+
+			const auto currentDevice = currentEntry->device;
+
+			if (i != currentEntry->startTime)
+			{
+				cells.emplace_back("\"");
+				continue;
+			}
+
+			auto startEntryMessage = std::format(
+				"{} ({})",
+				currentDevice->getName(),
+				currentDevice->getId()
+			);
+
+			cells.emplace_back(startEntryMessage);
 		}
 	}
 
@@ -436,16 +438,17 @@ void Scheduler::displayGantt()
 	for (int i = 0; i < cells.size(); ++i)
 	{
 		const auto& cell = cells.at(i);
-		const auto totalWidth = maxWidth.at(i % columnCount);
+		const auto cellColumnIndex = i % columnCount;
+		const auto widthDifference = maxWidth.at(cellColumnIndex) - cell.length();
 
 		std::cout << cell;
-		
-		if (totalWidth != cell.length())
-			std::cout << std::string(totalWidth - cell.length(), ' ');
-		
+
+		if (widthDifference > 0)
+			std::cout << std::string(widthDifference, ' ');
+
 		std::cout << " | ";
-	
-		if (i % columnCount == columnCount - 1)
+
+		if (cellColumnIndex == columnCount - 1)
 			std::cout << std::endl;
 	}
 }
