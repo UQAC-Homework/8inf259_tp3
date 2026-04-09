@@ -36,6 +36,9 @@ std::unordered_map<int, Device*> DeviceFactory::loadFromJson(const nlohmann::bas
 		auto device = loadDevice(deviceItem.value());
 		const auto id = device.getId();
 
+		if (devices.contains(id))
+			throw std::runtime_error("A device with ID '" + std::to_string(id) + "' is already loaded.");
+
 		auto devicePtr = new Device(device);
 		devices.insert({id, devicePtr});
 	}
