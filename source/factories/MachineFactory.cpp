@@ -72,6 +72,9 @@ std::unordered_map<int, Machine*> MachineFactory::loadFromJson(
 		auto machine = loadMachine(machineItem.value(), devices);
 		const auto id = machine.getId();
 
+		if (machines.contains(id))
+			throw std::invalid_argument("A machine with ID '" + std::to_string(id) + "' is already loaded.");
+
 		auto machinePtr = new Machine(machine);
 		machines.insert({id, machinePtr});
 	}
