@@ -5,13 +5,11 @@ Machine MachineFactory::loadMachine(
 	const std::unordered_map<int, Device*>& devices
 )
 {
-	constexpr auto ID_KEY = "id";
-	constexpr auto NAME_KEY = "name";
 	constexpr auto RELATIVE_DEVICES_KEY = "related_devices";
 	constexpr auto MACHINE_DEPENDENCIES_KEY = "depends_on";
 
-	auto id = obj.at(ID_KEY).get<int>();
-	auto name = obj.at(NAME_KEY).get<std::string>();
+	auto id = obj.at("id").get<int>();
+	auto name = obj.at("name").get<std::string>();
 	std::vector<Device*> relativeDevices = {};
 	std::vector<int> machineDependencies = {};
 
