@@ -3,14 +3,12 @@
     {
       "id": 1,
       "type": "VALVE",
-      "name": "Inlet Valve",
-      "lock_time": 4
+      "name": "Inlet Valve"
     },
     {
       "id": 2,
       "type": "BREAKER",
-      "name": "High Pressure Breaker",
-      "lock_time": 3
+      "name": "High Pressure Breaker"
     },
     {
       "id": 3,
@@ -30,8 +28,7 @@
     {
       "id": 6,
       "type": "DISCONNECT_SWITCH",
-      "name": "Padlock LOTO",
-      "lock_time": 5
+      "name": "Padlock LOTO"
     }
   ]
 }

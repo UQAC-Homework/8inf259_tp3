@@ -129,7 +129,6 @@
 #define SCHEDULER_H
 
 #include <functional>
-#include <unordered_set>
 
 #include "Device.h"
 #include "Machine.h"
