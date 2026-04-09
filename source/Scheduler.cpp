@@ -16,6 +16,15 @@ bool Scheduler::defaultTieBreaker(const Machine* a, const Machine* b)
 
 void Scheduler::displayTopologicalOrder(std::ostream& output, const std::vector<int>& order) const
 {
+	std::unordered_map<int, int> machineOrder;
+
+	for (int i = 0; i < order.size(); i++)
+	{
+		const auto id = order.at(i);
+
+		machineOrder[id] = i + 1;
+	}
+
 	output << "=== TOPOLOGICAL ORDER ===" << std::endl;
 	auto orderIndex = 0;
 
@@ -27,10 +36,18 @@ void Scheduler::displayTopologicalOrder(std::ostream& output, const std::vector<
 
 		if (!machine->getDependsOn().empty())
 		{
+			std::vector<int> dependencyOrder;
+			
+			for (const auto dependency : machine->getDependsOn())
+			{
+				const auto index = machineOrder.at(dependency);
+				dependencyOrder.push_back(index);
+			}
+
 			dependencyMessage = std::format(
 				"[after: {}]",
 				library::string::join(
-					machine->getDependsOn(),
+					dependencyOrder,
 					", "
 				)
 			);
